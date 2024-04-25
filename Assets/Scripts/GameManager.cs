@@ -15,8 +15,18 @@ public class GameManager : MonoBehaviour
     public GameObject losePanel;
     public GameObject winPanel;
 
+    private bool gameOver = false;
+
+    private void Start()
+    {
+        lives = 3;
+        score = 0;
+    }
+
     void Update()
     {
+        if (gameOver) return;
+
         livesText.text = $"Lives: {lives}";
         scoreText.text = $"Score: {score}";
 
@@ -24,7 +34,8 @@ public class GameManager : MonoBehaviour
         {
 
             losePanel.SetActive(true);
-            Time.timeScale = 0;
+            gameOver = true;
+            Invoke(nameof(Restart), 3);
         }
 
         var bricks = FindObjectsOfType<Brick>().Length;
@@ -32,12 +43,13 @@ public class GameManager : MonoBehaviour
         if(bricks == 0) 
         {
             winPanel.SetActive(true);
-            Time.timeScale = 0;
+            gameOver = true;
+            Invoke(nameof(Restart), 3);
         }
     }
 
-    public void Restart()
+    void Restart()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
