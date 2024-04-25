@@ -24,6 +24,7 @@ public class Brick : MonoBehaviour
             .DOScale(Vector2.one, duration)
             .ChangeStartValue(Vector2.zero)
             .SetEase(Ease.OutBounce);
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

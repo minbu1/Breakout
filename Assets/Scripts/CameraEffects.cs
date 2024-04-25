@@ -18,9 +18,9 @@ public class CameraEffects : MonoBehaviour
 
     private void Start()
     {
-        Vector3 startPos = new Vector3(camera.transform.position.x,
-            camera.transform.position.y,
-            camera.transform.position.z);
+        float startPosX = camera.transform.position.x;
+        float startPosY = camera.transform.position.y;
+        float startPosZ = camera.transform.position.z;
     }
 
 
@@ -28,6 +28,6 @@ public class CameraEffects : MonoBehaviour
     public void Shake()
     {
         transform.DOShakePosition(duration, strength, vibrato, randomness, snapping, fadeOut, mode);
-        transform.position = startPos;
+        
     }
 }

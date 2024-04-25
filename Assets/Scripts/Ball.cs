@@ -53,7 +53,5 @@ public class Ball : MonoBehaviour
         rb.velocity = new Vector2(Random.Range(-1f, 1f), rb.velocity.y);
         }
 
-
     }
-
 }
