@@ -6,25 +6,24 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     public float speed = 15;
-
-
-    [Range(0, 1)]  public float playerInfluence = 0.5f;
+    [Range(0, 1)] public float playerInfluence = 0.5f;
+    public ParticleSystem collisionParticles;
 
     [Header("Audio")]
     public AudioClip hitSound;
 
-    Rigidbody2D rb;
-    Rigidbody2D playerRb;
-    AudioSource audioSource;
+    private Rigidbody2D rb;
+    private Rigidbody2D playerRb;
+    private AudioSource audioSource;
 
-    void Start()
+    private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         rb.velocity = new Vector2(0, speed);
         audioSource = GetComponent<AudioSource>();
     }
 
-    void Update()
+    private void Update()
     {
         rb.velocity = rb.velocity.normalized * speed;
     }
@@ -33,16 +32,22 @@ public class Ball : MonoBehaviour
     {
         audioSource.PlayOneShot(hitSound);
 
-        if(collision.transform.CompareTag("Player"))
+        if (collisionParticles != null)
         {
-            if(playerRb == null)
+            Vector3 collisionPoint = collision.contacts[0].point;
+            Instantiate(collisionParticles, collisionPoint, Quaternion.identity);
+        }
+
+        if (collision.transform.CompareTag("Player"))
+        {
+            if (playerRb == null)
             {
                 playerRb = collision.transform.GetComponent<Rigidbody2D>();
             }
 
             rb.velocity = new Vector2(playerRb.velocity.x * playerInfluence, rb.velocity.y);
         }
-        else if(collision.transform.CompareTag("Ground"))
+        else if (collision.transform.CompareTag("Ground"))
         {
             GameManager.lives--;
             var player = FindObjectOfType<Player>().transform;
@@ -50,8 +55,7 @@ public class Ball : MonoBehaviour
         }
         else
         {
-        rb.velocity = new Vector2(Random.Range(-1f, 1f), rb.velocity.y);
+            rb.velocity = new Vector2(Random.Range(-1f, 1f), rb.velocity.y);
         }
-
     }
 }

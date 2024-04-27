@@ -15,19 +15,22 @@ public class CameraEffects : MonoBehaviour
 
     public GameObject camera;
 
+    private Vector3 startPosition;
 
     private void Start()
     {
-        float startPosX = camera.transform.position.x;
-        float startPosY = camera.transform.position.y;
-        float startPosZ = camera.transform.position.z;
+        startPosition = camera.transform.position;
     }
 
 
 
     public void Shake()
     {
-        transform.DOShakePosition(duration, strength, vibrato, randomness, snapping, fadeOut, mode);
-        
+        transform.DOShakePosition(duration, strength, vibrato, randomness, snapping, fadeOut, mode)
+          .OnComplete(() =>
+          {
+          transform.DOMove(startPosition, duration).SetEase(Ease.OutQuad);
+          });
+
     }
 }
